@@ -1,0 +1,254 @@
+:root {
+  color-scheme: dark;
+  font-family: "Share Tech Mono", "Courier New", monospace;
+  background: #050608;
+  color: #009a22;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+  background:
+    radial-gradient(
+      circle at 74% 45%,
+      rgba(35, 42, 54, 0.2),
+      transparent 31rem
+    ),
+    linear-gradient(145deg, #08090b 0%, #030405 68%, #08090b 100%);
+}
+
+body {
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.matrix-rain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+button {
+  font: inherit;
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(19rem, 0.72fr) minmax(26rem, 1.28fr);
+  align-items: center;
+  min-height: 100svh;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.hero::before {
+  position: absolute;
+  inset: 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+  content: "";
+}
+
+.hero__copy {
+  z-index: 2;
+  max-width: 38rem;
+  padding: clamp(3.2rem, 8vw, 8rem);
+  padding-right: 1rem;
+}
+
+.eyebrow,
+.edition,
+.hint,
+.motion-toggle {
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0 0 1.5rem;
+  color: #009a22;
+}
+
+.eyebrow::before {
+  width: 2.7rem;
+  height: 1px;
+  background: currentColor;
+  content: "";
+}
+
+h1 {
+  max-width: 13ch;
+  margin: 0;
+  font-family: inherit;
+  font-size: clamp(3.3rem, 6.2vw, 7.2rem);
+  font-weight: 400;
+  line-height: 0.91;
+  letter-spacing: -0.055em;
+}
+
+.intro {
+  max-width: 33rem;
+  margin: 2rem 0 0;
+  color: #8f939b;
+  font-size: clamp(0.94rem, 1.2vw, 1.08rem);
+  line-height: 1.65;
+}
+
+.visual {
+  position: relative;
+  height: min(100svh, 74rem);
+  min-height: 36rem;
+}
+
+.hacky-stage {
+  position: absolute;
+  inset: 0;
+  touch-action: pan-y;
+}
+
+.hacky-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.model-status {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.46);
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  transition: opacity 400ms ease;
+}
+
+.model-status.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.model-status.has-error {
+  max-width: 18rem;
+  color: #d89a92;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.visual__wash {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: min(52vw, 52rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(48, 64, 88, 0.16), transparent 66%);
+  filter: blur(1.5rem);
+  pointer-events: none;
+  transform: translate(-48%, -50%);
+}
+
+.hint {
+  position: absolute;
+  right: clamp(2.6rem, 5vw, 5rem);
+  bottom: 3rem;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+
+.motion-toggle {
+  position: absolute;
+  top: 2.5rem;
+  right: clamp(2.6rem, 5vw, 5rem);
+  z-index: 3;
+  padding: 0.8rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.58);
+  cursor: pointer;
+}
+
+.motion-toggle:hover,
+.motion-toggle:focus-visible {
+  border-color: rgba(255, 255, 255, 0.72);
+  color: #fff;
+  outline: none;
+}
+
+.edition {
+  position: absolute;
+  bottom: 2.65rem;
+  left: clamp(2.6rem, 5vw, 5rem);
+  z-index: 3;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 820px) {
+  body {
+    overflow: auto;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(31rem, 62svh);
+  }
+
+  .hero__copy {
+    padding: 5rem 2.5rem 0;
+  }
+
+  h1 {
+    font-size: clamp(3.3rem, 14vw, 6rem);
+  }
+
+  .visual {
+    height: 62svh;
+    min-height: 31rem;
+    margin-top: -1.5rem;
+  }
+
+  .motion-toggle {
+    top: 1.2rem;
+    right: 2.5rem;
+  }
+
+  .hint {
+    right: 2.5rem;
+    bottom: 2.5rem;
+  }
+
+  .edition {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hint {
+    display: none;
+  }
+}
