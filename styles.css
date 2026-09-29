@@ -123,10 +123,77 @@ h1 {
   touch-action: pan-y;
 }
 
+.hacky-stage.is-hovering {
+  cursor: pointer;
+}
+
+.hacky-stage:focus-visible {
+  outline: 1px solid rgba(0, 255, 43, 0.62);
+  outline-offset: -1.4rem;
+}
+
 .hacky-stage canvas {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+.speech-bubble {
+  position: absolute;
+  top: clamp(5rem, 13vh, 8.5rem);
+  right: clamp(2rem, 5vw, 5.5rem);
+  z-index: 4;
+  width: min(20rem, 38vw);
+  padding: 1.15rem 1.3rem 1.25rem;
+  border: 1px solid rgba(54, 186, 1, 0.52);
+  background: rgba(4, 11, 6, 0.92);
+  box-shadow:
+    0 0 2rem rgba(0, 255, 43, 0.1),
+    inset 0 0 1.5rem rgba(0, 154, 34, 0.05);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.7rem) scale(0.97);
+  transform-origin: 30% 100%;
+  transition:
+    opacity 180ms ease,
+    transform 220ms ease,
+    visibility 220ms;
+  visibility: hidden;
+}
+
+.speech-bubble::after {
+  position: absolute;
+  bottom: -0.62rem;
+  left: 2.2rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-right: 1px solid rgba(54, 186, 1, 0.52);
+  border-bottom: 1px solid rgba(54, 186, 1, 0.52);
+  background: rgba(4, 11, 6, 0.92);
+  content: "";
+  transform: rotate(45deg);
+}
+
+.speech-bubble.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+}
+
+.speech-bubble__label {
+  display: block;
+  margin-bottom: 0.65rem;
+  color: #36ba01;
+  font-size: 0.63rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.speech-bubble__message {
+  margin: 0;
+  color: rgba(231, 255, 229, 0.9);
+  font-size: clamp(0.86rem, 1.1vw, 1rem);
+  line-height: 1.55;
 }
 
 .model-status {
@@ -230,6 +297,23 @@ h1 {
     height: 62svh;
     min-height: 31rem;
     margin-top: -1.5rem;
+  }
+
+  .speech-bubble {
+    top: 1.5rem;
+    right: 50%;
+    width: min(20rem, calc(100vw - 4rem));
+    transform: translate(50%, 0.7rem) scale(0.97);
+    transform-origin: 50% 100%;
+  }
+
+  .speech-bubble.is-visible {
+    transform: translate(50%, 0) scale(1);
+  }
+
+  .speech-bubble::after {
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
   }
 
   .motion-toggle {

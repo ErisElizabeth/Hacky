@@ -4,7 +4,23 @@ import "./matrix-rain.js";
 
 const mount = document.querySelector("#hacky-stage");
 const status = document.querySelector("#model-status");
+const speechBubble = document.querySelector("#speech-bubble");
+const adviceMessage = document.querySelector("#hacky-advice");
+const quack = document.querySelector("#hacky-quack");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const hackyAdvice = [
+  "Enumerate before you exploit.",
+  "Never trust the obvious assumption.",
+  "Read the source.",
+  "One strange result deserves another look.",
+  "Check what the client already knows.",
+  "Reproduce the behavior before explaining it.",
+  "Start with the simplest failure mode.",
+  "If you're stuck, change layers.",
+  "Observe first. Touch things second.",
+  "The error message is evidence.",
+];
 
 const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2(0x050608, 0.09);
@@ -58,7 +74,11 @@ scene.add(ground);
 let hacky = null;
 let targetTiltX = 0;
 let targetTiltY = 0;
+let lastAdviceIndex = -1;
+let bubbleTimer;
 const clock = new THREE.Clock();
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
 
 new GLTFLoader().load(
   "./assets/Hacky.glb",
@@ -111,12 +131,60 @@ function updatePointer(event) {
   const y = ((event.clientY - rect.top) / rect.height) * 2 - 1;
   targetTiltY = THREE.MathUtils.clamp(x * 0.17, -0.17, 0.17);
   targetTiltX = THREE.MathUtils.clamp(y * 0.08, -0.08, 0.08);
+  mount.classList.toggle("is-hovering", Boolean(getHackyHit(event)));
+}
+
+function getHackyHit(event) {
+  if (!hacky) return null;
+  const rect = mount.getBoundingClientRect();
+  pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+  camera.updateMatrixWorld();
+  hacky.updateMatrixWorld(true);
+  raycaster.setFromCamera(pointer, camera);
+  return raycaster.intersectObject(hacky, true)[0] ?? null;
+}
+
+function getNextAdvice() {
+  let index;
+  do {
+    index = Math.floor(Math.random() * hackyAdvice.length);
+  } while (index === lastAdviceIndex && hackyAdvice.length > 1);
+  lastAdviceIndex = index;
+  return hackyAdvice[index];
+}
+
+function showAdvice() {
+  adviceMessage.textContent = getNextAdvice();
+  speechBubble.classList.add("is-visible");
+  speechBubble.setAttribute("aria-hidden", "false");
+
+  clearTimeout(bubbleTimer);
+  bubbleTimer = setTimeout(() => {
+    speechBubble.classList.remove("is-visible");
+    speechBubble.setAttribute("aria-hidden", "true");
+  }, 6500);
+
+  quack.pause();
+  quack.currentTime = 0;
+  quack.play().catch((error) => {
+    console.warn("Hacky's quack could not play.", error);
+  });
 }
 
 mount.addEventListener("pointermove", updatePointer);
 mount.addEventListener("pointerleave", () => {
   targetTiltX = 0;
   targetTiltY = 0;
+  mount.classList.remove("is-hovering");
+});
+mount.addEventListener("click", (event) => {
+  if (getHackyHit(event)) showAdvice();
+});
+mount.addEventListener("keydown", (event) => {
+  if (event.key !== "Enter" && event.key !== " ") return;
+  event.preventDefault();
+  if (hacky) showAdvice();
 });
 
 const resizeObserver = new ResizeObserver(resize);

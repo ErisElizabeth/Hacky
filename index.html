@@ -33,7 +33,17 @@
       </div>
 
       <section class="visual" aria-label="Hacky, your 3D rubber duck assistant">
-        <div id="hacky-stage" class="hacky-stage" aria-hidden="true"></div>
+        <div
+          id="hacky-stage"
+          class="hacky-stage"
+          role="button"
+          tabindex="0"
+          aria-label="Ask Hacky for advice"
+        ></div>
+        <aside id="speech-bubble" class="speech-bubble" aria-hidden="true">
+          <span class="speech-bubble__label">Hacky says</span>
+          <p id="hacky-advice" class="speech-bubble__message" aria-live="polite"></p>
+        </aside>
         <p id="model-status" class="model-status" role="status">Waking Hacky…</p>
         <div class="visual__wash" aria-hidden="true"></div>
 
@@ -44,6 +54,7 @@
     </main>
 
     <noscript>This prototype needs JavaScript enabled.</noscript>
+    <audio id="hacky-quack" src="./assets/quack.mp3" preload="auto"></audio>
     <script type="module" src="./main.js"></script>
   </body>
 </html>
